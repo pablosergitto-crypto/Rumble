@@ -1,0 +1,24 @@
+name: Interactive Xcode Terminal
+on: workflow_dispatch # Позволяет запускать сборку вручную кнопкой в интерфейсе GitHub
+
+jobs:
+  terminal:
+    runs-on: macos-14 # Используем macOS с предустановленным Xcode
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive # Автоматически скачает все зависимости Rumble
+
+      - name: Setup Web Terminal
+        run: |
+          # Установка веб-терминала WeTTY и инструментов Microsoft Dev Tunnels
+          npm install -g wetty
+          brew install --cask microsoft-dev-tunnels
+          
+          # Запуск терминала в фоновом режиме
+          wetty --port 3000 --command bash &
+          
+          # Создание публичной ссылки для доступа к терминалу
+          echo "Перейдите по ссылке ниже, когда туннель запустится:"
+          devtunnel host -p 3000 --allow-anonymous
