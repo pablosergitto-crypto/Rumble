@@ -1,0 +1,15 @@
+name: Xcode SSH Debug
+on: workflow_dispatch
+
+jobs:
+  debug:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Open Terminal Session
+        uses: mxschmitt/action-tmate@v3
+        # Сессия будет активна, пока вы сами из неё не выйдете (командой exit)
